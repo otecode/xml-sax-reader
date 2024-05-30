@@ -1,0 +1,30 @@
+package xmlSaxReader;
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+public class SaxReader {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		SAXParser XMLprocessor;
+
+        try {
+            XMLprocessor = SAXParserFactory.newInstance().newSAXParser(); // Creates both parserfactory y  parser (will parse through the document's lines)          
+            ContentManager manager = new ContentManager(); // Creates the handler (will decide an action for each parsed line)
+            InputSource fileXML = new InputSource("personas.xml"); // Indicamos el documento a leer
+            XMLprocessor.parse(fileXML, manager); // Le decimos al parser que documento lee y el handler a pasarle (con sus metodos)
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(UF3Ejercicio9.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		
+	}
+
+}
