@@ -5,54 +5,57 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class ContentManager extends DefaultHandler {
-	
-	private int nivelTabulado; // Creada para controlar la tabulación por niveles
+	 
+	private int tabLevel = 0; // Element indentation level
 
     public ContentManager() {
         super();
     }
 
     public void startDocument() {
-        System.out.println("Comienzo del documento XML");
+        System.out.println("Start of XML file");
     }
 
     public void endDocument() {
-        System.out.println("Fin del documento XML");
+        System.out.println("End of XML file");
     }
 
-    public void startElement(String uri, String nombre, String nombreC, Attributes atts) {
+    public void startElement(String uri, String name, String nameC, Attributes atts) {
 
-        nivelTabulado++; // Cada elemento iniciado aumenta el tabulado
-        for (int i = 0; i < nivelTabulado; i++) { // Se introduce el nivel de tabulado
+        tabLevel++; // Each element hierarchy will have more indentation
+        for (int i = 0; i < tabLevel; i++) { // Loop that counts the hierarchy level and applies it to tabulation
             System.out.print("\t");
         }
-        System.out.println(nombreC + ": "); // Se muestra el nombre de elemento
+        
+        System.out.println(nameC + ": "); // Shows the element's name
 
-        // ATRIBUTOS, si los tiene
+        // ATTRIBUTES, if existent
         if (atts.getLength() > 0) {
 
-            for (int i = 0; i < atts.getLength(); i++) {
-                for (int j = 0; j < nivelTabulado; j++) {
+            for (int i = 0; i < atts.getLength(); i++) { // For each attribute
+            	
+                for (int j = 0; j < tabLevel; j++) { // Writes their indentation
                     System.out.print("\t");
                 }
-                System.out.println("\t" + atts.getQName(i) + ": " + atts.getValue(i));
-                // Tienen un tabulado extra para distinguirlos del elemento al que pertenecen
+                
+                System.out.println("\t" + atts.getQName(i) + ": " + atts.getValue(i)); // And their content (extra tab to distinguish them from their parent element)
             }
         }
     }
 
     public void endElement(String uri, String nombre, String nombreC) {
-        nivelTabulado--; // Terminar un elemento disminuye el tabulado, para que no sea acumulativo
+        tabLevel--; // Returning to the previous indentation level, to avoid its accumulation
     }
 
     public void characters(char[] ch, int inicio, int longitud) throws SAXException {
-        for (int i = 0; i < nivelTabulado; i++) {
+    	
+        for (int i = 0; i < tabLevel; i++) {
             System.out.print("\t");
         }
 
-        String car = new String(ch, inicio, longitud); // Agrupa caracteres del contenido de un elemento en un String
-        car = car.replaceAll("[\t\n]", ""); // Quita los saltos de línea y tabulaciones
-        System.out.println("  " + car); // Lo muestra, con dos espacios para distinguir contenido de elemento
+        String car = new String(ch, inicio, longitud); // Groups characters from an element in a string
+        car = car.replaceAll("[\t\n]", ""); // Trims line breaks and tabs from the content
+        System.out.println("  " + car); // Shows it, with a couple of spaces to distinguish it from its element
     }
 
 }
