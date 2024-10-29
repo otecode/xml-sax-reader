@@ -16,7 +16,7 @@ public class SaxReader {
 	// Method that check if a path is valid. It will call itself
 	// until a valid path is entered, which will be returned.
 	
-	public static String EnterAndValidateRoute(Scanner input) {
+	public static String enterAndValidateRoute(Scanner input) {
 		
 		String route = null;
 		boolean isValid = false;
@@ -52,7 +52,7 @@ public class SaxReader {
 		
 		try (Scanner input = new Scanner(System.in)) {
 			
-			String route = EnterAndValidateRoute(input);
+			String route = enterAndValidateRoute(input);
 			
 			// Reading the file and showing it on console
 			
